@@ -85,7 +85,7 @@ class App extends Component {
                 let unsubscribeMessages = messagesDB
                     .where('group_name', '==', this.state.currentGroup)
                     .orderBy('time')
-                    .limit(15)
+                    // .limit(15)
                     .onSnapshot(querySnapshot => {
                         let items = querySnapshot.docs.map(doc => {
                             let data = doc.data()
