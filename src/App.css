@@ -13,30 +13,133 @@
   margin-top: 10px;
   padding: 2px 10px;
   border-radius: 16px;
-  background-color: #6eabb5 !important;
+  background-color: #5177a7;
 }
+
+.sidebarElement:hover {
+  background-color: #6e94bf;
+}
+
+.sidebarActiveElement {
+  background-color: #6e94bf;
+}
+
+.sidebarButton {
+  padding:0.3em 1.2em;
+  margin:0 0.3em 0.3em 0;
+  border-radius:2em;
+  width: 100%
+}
+
+
+
+.rightSide {
+  height: 100vh !important;
+  overflow: auto;
+}
+
+
+
+#inputText {
+  float: left;
+  flex-grow: 100;
+  width: calc(100vw - 315px);
+  padding: 7px;
+  border-radius: 100px;
+  border:0;
+  margin-right: 5px;
+  /*box-shadow:0 0 15px 4px rgb(14, 14, 14);*/
+  background: rgb(239, 239, 239);
+  color: #323232
+}
+
+#inputButton {
+  float: left;
+}
+
+.button {
+  padding: 7px;
+  border-radius: 100px;
+  border: 0;
+  margin-bottom: 4px;
+  background: rgb(239, 239, 239)
+}
+
 
 .messagesField {
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .message {
+  color: black;
   line-height: 1;
   width: 200px;
-  margin: 30px;
-  padding: 2px 10px;
-  border-radius: 6px;
+  margin: 20px;
+}
+
+.messageText {
+  color: white;
+  padding: 6px 10px;
+  border-radius: 16px;
+  margin: 0;
+
   background-color: #549b46
 }
 
+.messageHeader {
+  margin-bottom: 0;
+  font-size: 12px;
+  color: gray;
+}
+
 .messageSender {
-  margin-left: 400px;
+  margin-left: calc(100vw - 450px);
+}
+
+.messageSender .messageHeader {
+  text-align: right;
 }
 
 .messagesField {
-  height: 100vh;
+  /*height: 100vh;*/
+  padding-bottom: 10px;
   overflow: auto;
 }
+
+
+
+
+
+
+.form {
+  /*background-color: #12b0ff;*/
+  text-align: center;
+  width: 100%;
+  margin: 4px;
+}
+
+footer {
+  /*background-color: #12b0ff;*/
+  text-align: center;
+  position: absolute;
+  display: flex;
+  bottom: 0;
+}
+
+
+header {
+  background-color: #12b0ff;
+  padding: 10px;
+  text-align: center;
+}
+
+h2 {
+  margin: 0;
+}
+
+
+
 
 
 .ex3 .parent {
@@ -50,9 +153,14 @@
 
 body {
   font-family: system-ui, serif;
+  color: white;
+  display: grid;
+  height: 100vh;
+  grid-template-rows: auto 1fr auto;
 }
 
 .ex3 .parent {
   display: grid;
   grid-template-columns: minmax(150px, 25%) 1fr;
 }
+

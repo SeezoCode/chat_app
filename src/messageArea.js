@@ -2,19 +2,19 @@ import {Component} from "react";
 
 class Message extends Component {
     render() {
-        if (this.props.name === this.props.sender) {
+        if (this.props.useruid === this.props.messageuid) {
             return (
                 <div className="message messageSender">
-                    <p>{this.props.name} at {this.props.time}</p>
-                    <p>{this.props.text}</p>
+                    <p className='messageHeader'>{this.props.sender}</p>
+                    <p className='messageText'>{this.props.text}</p>
                 </div>
             )
         }
         else {
             return (
                 <div className="message">
-                    <p>{this.props.name} at {this.props.time}</p>
-                    <p>{this.props.text}</p>
+                    <p className='messageHeader'>{this.props.sender}</p>
+                    <p className='messageText'>{this.props.text}</p>
                 </div>
             )
         }
@@ -25,8 +25,8 @@ class Message extends Component {
 class Messages extends Component {
     render() {
         let messages = this.props.messages.map(message => {
-            return <Message text={message.text} name={message.name} time={message.time} key={message.time}
-                            sender={this.props.senderName} />
+            return <Message text={message.text} useruid={this.props.uid} messageuid={message.UID} time={message.time} key={message.id}
+            sender={message.sender} />
         })
 
         return(
