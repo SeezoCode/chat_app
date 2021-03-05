@@ -24,8 +24,9 @@ class Message extends Component {
 
 class Messages extends Component {
     render() {
-        let messages = this.props.messages.map(message => {
-            return <Message text={message.text} useruid={this.props.uid} messageuid={message.UID} time={message.time} key={message.id}
+        // if (this.props.messages === null)
+        let messages = this.props.messages.map((message, i) => {
+            return <Message text={message.text} useruid={this.props.uid} messageuid={message.UID} time={message.time} key={i}
             sender={message.sender} />
         })
 

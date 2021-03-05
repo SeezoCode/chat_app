@@ -21,8 +21,8 @@ class SidebarElement extends Component {
 
 class Sidebar extends Component {
     render() {
-        let groupsNameArray = this.props.groupsName.map(elem => {
-            return <SidebarElement name={elem.name} lastMessage={'something depressed'} key={elem.id}
+        let groupsNameArray = this.props.groupsName.map((elem, i) => {
+            return <SidebarElement name={elem.name} lastMessage={elem.description} key={i}
                                    isActive={this.props.currentGroup === elem.name} changeGroup={() => this.props.changeGroup(elem.name)} />
         })
         return(

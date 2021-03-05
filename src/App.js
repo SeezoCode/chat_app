@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import {Component} from 'react'
 import Sidebar from './sidebar.js'
@@ -10,8 +10,8 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
 
-import {useAuthState} from "react-firebase-hooks/auth";
-import {useCollectionData} from "react-firebase-hooks/firestore";
+// import {useAuthState} from "react-firebase-hooks/auth";
+// import {useCollectionData} from "react-firebase-hooks/firestore";
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -42,7 +42,7 @@ const firestore = firebase.firestore()
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-let unsubscribe
+let unsubscribeMessages, unsubscribeGroups
 
 
 class App extends Component {
@@ -53,15 +53,15 @@ class App extends Component {
             allGroupsNames: ['groupone', 'grouptwo'],
             currentGroup: this.getURL(),
             unsubscribe: null,
-            UID: '',
-            userName: '',
-            inputValue: '',
+            UID: null,
+            userName: null,
+            inputValue: null,
             signedIn: null,
             messages: [{
-                time: '',
-                sender: '',
-                text: '',
-                UID: '',
+                time: null,
+                sender: null,
+                text: null,
+                UID: null,
             }
             ]
         }
@@ -82,7 +82,7 @@ class App extends Component {
                     groupsDB: groupsDB,
                 })
 
-                let unsubscribeMessages = messagesDB
+                unsubscribeMessages = messagesDB
                     .where('group_name', '==', this.state.currentGroup)
                     .orderBy('time')
                     // .limit(15)
@@ -101,24 +101,23 @@ class App extends Component {
                             messages: items,
                         })
                     });
-                let unsubscribeGroups = groupsDB.onSnapshot(querySnapshot => {
+                unsubscribeGroups = groupsDB.onSnapshot(querySnapshot => {
                     let items = querySnapshot.docs.map(doc => {
+                        let data = doc.data()
                         return {
-                            name: doc.data().group_name,
+                            name: data.group_name,
+                            description: data.description,
                             id: doc.id
                         }
                     })
                     this.setState({allGroupsNames: items})
                 })
-                this.setState({
-                    unsubscribeMessages: unsubscribeMessages,
-                    unsubscribeGroups: unsubscribeGroups,
-                })
             } else {
                 this.setState({
                     signedIn: false
                 })
-                unsubscribe && unsubscribe()
+                unsubscribeMessages && unsubscribeMessages()
+                unsubscribeGroups && unsubscribeGroups()
             }
         })
     }
@@ -126,7 +125,6 @@ class App extends Component {
     getURL = () => {
         let url = new URL(window.location.href)
         let groupName = url.searchParams.get('group_name')
-        console.log(groupName)
         if (groupName) return groupName
         else return 'group_one'
     }
@@ -149,9 +147,25 @@ class App extends Component {
                 text: this.state.inputValue,
                 time: serverTimestamp()
             })
+            this.handleDescription()
             this.setState({inputValue: ''})
         }
         e.preventDefault()
+    }
+
+    handleDescription = () => {
+        if (this.getURL() === undefined) return
+        let currentGroupId
+        for (let group of this.state.allGroupsNames) {
+            if (group.name === this.state.currentGroup) currentGroupId = group.id
+        }
+        let description = ''
+        if (this.state.inputValue.length > 18) description = this.state.inputValue.slice(0,18) + '...'
+        else description = this.state.inputValue
+        this.state.groupsDB.doc(currentGroupId).set({
+            group_name: this.getURL(),
+            description: description
+        })
     }
 
     changeGroup = (groupName) => {
