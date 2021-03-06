@@ -8,6 +8,10 @@ export class SidebarHider extends Component {
 
 
 class SidebarElement extends Component {
+    onClickElem = () => {
+        window.open(`/?group_name=${this.props.name}`, '_self')
+    }
+
     render() {
         if (this.props.isActive) return(
             <div className="sidebarElement sidebarActiveElement" onClick={() => console.log('clicked')}>
@@ -16,9 +20,24 @@ class SidebarElement extends Component {
             </div>
         )
         return (
-            <div className="sidebarElement" onClick={() => window.open(
-                `${window.location.protocol + window.location.host}/?group_name=${this.props.name}`, '_self')}>
+            <div className="sidebarElement" onClick={this.onClickElem}>
                 <h3>{this.props.name}</h3>
+                <p>{this.props.lastMessage}</p>
+            </div>
+        )
+    }
+}
+
+
+class SidebarElementAddGroup extends Component {
+    onClickElem = () => {
+        let p = prompt("Please enter group name")
+        if (p) window.open(`/?group_name=${p}`, '_self')
+    }
+
+    render() {
+        return (
+            <div className="sidebarElement" onClick={this.onClickElem}>
                 <p>{this.props.lastMessage}</p>
             </div>
         )
@@ -39,6 +58,7 @@ export class Sidebar extends Component {
         return(
             <div className="sidebarElements">
                 {groupsNameArray}
+                <SidebarElementAddGroup lastMessage='Different group' />
             </div>
         )
     }

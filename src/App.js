@@ -103,7 +103,10 @@ class App extends Component {
                             messages: items,
                         })
                     });
-                unsubscribeGroups = groupsDB.onSnapshot(querySnapshot => {
+                unsubscribeGroups = groupsDB
+                    .orderBy('time')
+                    .limitToLast(3)
+                    .onSnapshot(querySnapshot => {
                     let items = querySnapshot.docs.map(doc => {
                         let data = doc.data()
                         return {
@@ -112,6 +115,7 @@ class App extends Component {
                             id: doc.id
                         }
                     })
+                        items.reverse()
                     this.setState({allGroupsNames: items})
                 })
             } else {
@@ -142,7 +146,7 @@ class App extends Component {
     onFieldSubmit = (e) => {
         if (this.state.inputValue) {
             if (!this.state.user) {
-                console.log('user must be logged in')
+                alert('User must be logged in')
                 return
             }
             const {serverTimestamp} = firebase.firestore.FieldValue;
@@ -170,7 +174,8 @@ class App extends Component {
         else description = this.state.inputValue
         this.state.groupsDB.doc(currentGroupId).set({
             group_name: this.getURL(),
-            description: description
+            description: description,
+            time: firebase.firestore.FieldValue.serverTimestamp()
         })
     }
 
@@ -197,7 +202,7 @@ class App extends Component {
                 {/*messageField*/}
                 <div className="rightSide">
                     <header>
-                        <SidebarHider hideShowHandler={this.hideShowHandler} state={this.state.hidden} />
+                        <SidebarHider hideShowHandler={this.hideShowHandler} state={this.state.hidden} /> <span>{this.getURL()}</span>
                     </header>
                     <main className="messagesField">
                         <div className='content'>

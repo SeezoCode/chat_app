@@ -1,3 +1,10 @@
+# Chat App Infinite
+Click [**here**](https://chatappinfinite.web.app) to open the website
+
+
+-------------------------------------------------------------------------------
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

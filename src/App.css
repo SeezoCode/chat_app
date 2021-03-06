@@ -181,8 +181,6 @@ h2 {
 
 
 
-
-
 .ex3 .parent {
   display: grid;
   grid-template-columns: minmax(150px, 25%) 1fr;
@@ -221,9 +219,11 @@ body {
   }
   #inputText {
     background-color: #262626 !important;
+    color: #d9d9d9
   }
   #inputText2 {
     background-color: #262626 !important;
+    color: #d9d9d9
   }
   footer {
     background-color: #262626 !important;
