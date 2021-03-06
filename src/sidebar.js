@@ -46,10 +46,6 @@ class SidebarElementAddGroup extends Component {
 
 
 export class Sidebar extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         let groupsNameArray = this.props.groupsName.map((elem, i) => {
             return <SidebarElement name={elem.name} lastMessage={elem.description} key={i}
@@ -57,6 +53,7 @@ export class Sidebar extends Component {
         })
         return(
             <div className="sidebarElements">
+                <p>Latest active groups:</p>
                 {groupsNameArray}
                 <SidebarElementAddGroup lastMessage='Different group' />
             </div>

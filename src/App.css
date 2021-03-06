@@ -55,26 +55,22 @@ span {
 
 
 #inputText {
-  float: left;
   flex-grow: 100;
-  width: calc(100vw - 325px);
+  width: calc(100vw - 255px);
   padding: 7px;
   border-radius: 100px;
   border:0;
-  margin-right: 5px;
   /*box-shadow:0 0 15px 4px rgb(14, 14, 14);*/
   background: rgb(239, 239, 239);
   color: #323232
 }
 
 #inputText2 {
-  float: left;
   flex-grow: 100;
-  width: calc(100vw - 90px);
+  width: calc(100vw - 24px);
   padding: 7px;
   border-radius: 100px;
   border:0;
-  margin-right: 5px;
   /*box-shadow:0 0 15px 4px rgb(14, 14, 14);*/
   background: rgb(239, 239, 239);
   color: #323232
@@ -144,7 +140,7 @@ span {
 
 .messagesField {
   /*height: 100vh;*/
-  padding-bottom: 28px;
+  padding-bottom: 50px;
   overflow: auto;
 }
 
@@ -196,7 +192,15 @@ body {
   display: grid;
   height: 100vh;
   grid-template-rows: auto 1fr auto;
+  overflow: auto;
+}
 
+.sidebar {
+  overflow: auto;
+}
+
+.sidebarElements {
+  padding-bottom: 100px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -209,7 +213,7 @@ body {
   }
   .button {
     background-color: #262626 !important;
-    color: white !important
+    color: #d7d7d7 !important
   }
   header {
     background-color: #294f7c
@@ -226,7 +230,7 @@ body {
     color: #d9d9d9
   }
   footer {
-    background-color: #262626 !important;
+    background-color: #2d2b2b !important;
   }
   .sidebarGroups {
     background-color: #1e3a5b
@@ -246,4 +250,3 @@ body {
   display: grid;
   grid-template-columns: minmax(150px, 25%) 1fr;
 }
-

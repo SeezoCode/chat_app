@@ -68,7 +68,9 @@ class App extends Component {
             ]
         }
         this.onFieldSubmit = this.onFieldSubmit.bind(this)
+    }
 
+    componentDidMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
                 this.setState({
@@ -76,7 +78,7 @@ class App extends Component {
                     signedIn: true,
                 })
                 let messagesDB = firestore.collection('messages')
-                let groupsDB = firestore.collection('groups')
+                let groupsDB = firestore.collection('group_names')
                 this.setState({
                     UID: user.uid,
                     userName: user.displayName,
@@ -87,7 +89,7 @@ class App extends Component {
                 unsubscribeMessages = messagesDB
                     .where('group_name', '==', this.state.currentGroup)
                     .orderBy('time')
-                    .limitToLast(18)
+                    .limitToLast(20)
                     .onSnapshot(querySnapshot => {
                         let items = querySnapshot.docs.map(doc => {
                             let data = doc.data()
@@ -99,29 +101,33 @@ class App extends Component {
                                 id: doc.id
                             }
                         })
+                        items.reverse()
                         this.setState({
                             messages: items,
                         })
                     });
                 unsubscribeGroups = groupsDB
+                    // .where('public', '!=', false)
+                    // .orderBy('public')
                     .orderBy('time')
-                    .limitToLast(3)
+                    .limitToLast(4)
                     .onSnapshot(querySnapshot => {
-                    let items = querySnapshot.docs.map(doc => {
-                        let data = doc.data()
-                        return {
-                            name: data.group_name,
-                            description: data.description,
-                            id: doc.id
-                        }
+                        let items = querySnapshot.docs.map(doc => {
+                            let data = doc.data()
+                            return {
+                                name: data.group_name,
+                                description: data.description,
+                                id: doc.id
+                            }
+                        })
+
+                        this.setState({allGroupsNames: items})
                     })
-                        items.reverse()
-                    this.setState({allGroupsNames: items})
-                })
             } else {
                 this.setState({
                     signedIn: false
                 })
+
                 unsubscribeMessages && unsubscribeMessages()
                 unsubscribeGroups && unsubscribeGroups()
             }
@@ -132,7 +138,9 @@ class App extends Component {
         let url = new URL(window.location.href)
         let groupName = url.searchParams.get('group_name')
         if (groupName) return groupName
-        else return 'group_one'
+        else {
+            return 'Default Group'
+        }
     }
 
     hideShowHandler = () => {
@@ -145,7 +153,7 @@ class App extends Component {
 
     onFieldSubmit = (e) => {
         if (this.state.inputValue) {
-            if (!this.state.user) {
+            if (!this.state.signedIn) {
                 alert('User must be logged in')
                 return
             }
@@ -167,7 +175,9 @@ class App extends Component {
         if (this.getURL() === undefined) return
         let currentGroupId
         for (let group of this.state.allGroupsNames) {
-            if (group.name === this.state.currentGroup) currentGroupId = group.id
+            if (group.name === this.state.currentGroup) {
+                currentGroupId = group.id
+            }
         }
         let description = ''
         if (this.state.inputValue.length > 18) description = this.state.inputValue.slice(0,18) + '...'
@@ -175,7 +185,7 @@ class App extends Component {
         this.state.groupsDB.doc(currentGroupId).set({
             group_name: this.getURL(),
             description: description,
-            time: firebase.firestore.FieldValue.serverTimestamp()
+            time: firebase.firestore.FieldValue.serverTimestamp(),
         })
     }
 
@@ -187,6 +197,14 @@ class App extends Component {
     signInBtnGoogle = () => auth.signInWithPopup(provider);
 
     signOutBtn = () => auth.signOut();
+
+    scroll = () => {
+        try {
+            let messageText = document.getElementsByClassName('messageText')
+            messageText[messageText.length - 1].scrollIntoView()
+        }
+        catch (e) {}
+    }
 
     render() {
         return (
@@ -216,6 +234,7 @@ class App extends Component {
                                    state={this.state.hidden} />
                     </footer>
                 </div>
+                {this.scroll()}
             </div>
         );
     }

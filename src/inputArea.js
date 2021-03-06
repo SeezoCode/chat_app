@@ -16,7 +16,7 @@ class InputArea extends Component {
                            placeholder='Please, type a message' />
 
                 }
-                <input type="submit" value='submit' id='inputButton' className='button' />
+                {/*<input type="submit" value='submit' id='inputButton' className='button hiderButton' />*/}
             </form>
         )
     }
