@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import {Component} from 'react'
-import Sidebar from './sidebar.js'
+import {Sidebar, SidebarHider} from './sidebar.js'
 import Messages from './messageArea'
 import InputArea from './inputArea'
 import SignButton from './signInButton'
@@ -50,9 +50,11 @@ class App extends Component {
         super(props);
 
         this.state = {
-            allGroupsNames: ['groupone', 'grouptwo'],
+            allGroupsNames: [],
+            hidden: false,
             currentGroup: this.getURL(),
             unsubscribe: null,
+            formValue: '',
             UID: null,
             userName: null,
             inputValue: null,
@@ -85,7 +87,7 @@ class App extends Component {
                 unsubscribeMessages = messagesDB
                     .where('group_name', '==', this.state.currentGroup)
                     .orderBy('time')
-                    // .limit(15)
+                    .limitToLast(18)
                     .onSnapshot(querySnapshot => {
                         let items = querySnapshot.docs.map(doc => {
                             let data = doc.data()
@@ -127,6 +129,10 @@ class App extends Component {
         let groupName = url.searchParams.get('group_name')
         if (groupName) return groupName
         else return 'group_one'
+    }
+
+    hideShowHandler = () => {
+        this.setState({hidden: !this.state.hidden})
     }
 
     onFieldChange = (e) => {
@@ -181,25 +187,28 @@ class App extends Component {
         return (
             <div className="parent">
                 {/*sidebar*/}
+                {!this.state.hidden &&
                 <div className="sidebarGroups sidebar">
                     <h1>Hello, {this.state.userName}</h1>
                     <hr/>
                     <SignButton signInGoogle={this.signInBtnGoogle} signOut={this.signOutBtn} signedIn={this.state.signedIn} />
                     <Sidebar groupsName={this.state.allGroupsNames} currentGroup={this.state.currentGroup} changeGroup={this.changeGroup} />
-                </div>
+                </div>}
                 {/*messageField*/}
                 <div className="rightSide">
                     <header>
-                        <h2>Messenger by Filip Hostinský</h2>
+                        <SidebarHider hideShowHandler={this.hideShowHandler} state={this.state.hidden} />
                     </header>
                     <main className="messagesField">
                         <div className='content'>
-                            <Messages messages={this.state.messages} uid={this.state.UID}/>
+                            <Messages messages={this.state.messages} uid={this.state.UID} hiddenSidebar={this.state.hidden}/>
                         </div>
                         {/*type form*/}
                     </main>
+
                     <footer className="inputArea">
-                        <InputArea changeValue={this.onFieldChange} onFieldSubmit={this.onFieldSubmit}/>
+                        <InputArea changeValue={this.onFieldChange} onFieldSubmit={this.onFieldSubmit}
+                                   state={this.state.hidden} />
                     </footer>
                 </div>
             </div>

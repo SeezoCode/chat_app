@@ -29,6 +29,22 @@
   margin-top: 10px
 }
 
+.hiderButton {
+  /*position: absolute*/
+  text-align: left !important;
+}
+
+.messbyF {
+  /*text-align: center;*/
+  /*width: 100vw;*/
+  /*margin: 40px !important;*/
+  /*margin-left: 10px;*/
+}
+
+span {
+  /*padding-top: 50px !important;*/
+}
+
 
 
 .rightSide {
@@ -42,6 +58,19 @@
   float: left;
   flex-grow: 100;
   width: calc(100vw - 315px);
+  padding: 7px;
+  border-radius: 100px;
+  border:0;
+  margin-right: 5px;
+  /*box-shadow:0 0 15px 4px rgb(14, 14, 14);*/
+  background: rgb(239, 239, 239);
+  color: #323232
+}
+
+#inputText2 {
+  float: left;
+  flex-grow: 100;
+  width: calc(100vw - 81px);
   padding: 7px;
   border-radius: 100px;
   border:0;
@@ -72,8 +101,9 @@
 .message {
   color: black;
   line-height: 1;
-  width: 200px;
+  max-width: 200px;
   margin: 20px;
+  margin-left: 5px;
 }
 
 .messageText {
@@ -82,7 +112,10 @@
   border-radius: 16px;
   margin: 0;
 
-  background-color: #549b46
+  /*background-color: #549b46*/
+  /*background-color: #5597b1;*/
+  background-color: #0d8ccb;
+
 }
 
 .messageHeader {
@@ -91,8 +124,18 @@
   color: gray;
 }
 
+.messageHeader2 {
+  text-align: right;
+}
+
 .messageSender {
   margin-left: calc(100vw - 454px);
+}
+
+.messageSender2 {
+  margin: 0;
+  margin-left: calc(100vw - 210px);
+  /*margin-left: calc(100vw - 210px);*/
 }
 
 .messageSender .messageHeader {
@@ -129,7 +172,7 @@ footer {
 header {
   background-color: #12b0ff;
   padding: 10px;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 h2 {
@@ -155,6 +198,48 @@ body {
   display: grid;
   height: 100vh;
   grid-template-rows: auto 1fr auto;
+
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #2d2b2b
+  }
+  button {
+    background-color: #262626 !important;
+    color: white !important
+  }
+  .button {
+    background-color: #262626 !important;
+    color: white !important
+  }
+  header {
+    background-color: #294f7c
+  }
+  .messageText {
+    background-color: #294f7c
+  }
+  #inputText {
+    background-color: #262626 !important;
+  }
+  #inputText2 {
+    background-color: #262626 !important;
+  }
+  footer {
+    background-color: #262626 !important;
+  }
+  .sidebarGroups {
+    background-color: #1e3a5b
+  }
+  .sidebarElement {
+    background-color: #324a69;
+  }
+  .sidebarElement:hover {
+    background-color: #2a415d;
+  }
+  .sidebarActiveElement {
+    background-color: #2a415d;
+  }
 }
 
 .ex3 .parent {

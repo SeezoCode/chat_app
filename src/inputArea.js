@@ -4,7 +4,13 @@ class InputArea extends Component {
     render() {
         return(
             <form onSubmit={this.props.onFieldSubmit} className="form">
-                <input type="text" onChange={this.props.changeValue} id='inputText' placeholder='Please, type a message' />
+                {!this.props.state ?
+                    <input type="text" onChange={this.props.changeValue} id='inputText'
+                           placeholder='Please, type a message' /> :
+                    <input type="text" onChange={this.props.changeValue} id='inputText2'
+                           placeholder='Please, type a message' />
+
+                }
                 <input type="submit" value='submit' id='inputButton' className='button' />
             </form>
         )

@@ -1,5 +1,12 @@
 import {Component} from "react";
 
+export class SidebarHider extends Component {
+    render() {
+        return(<button className='button hiderButton' onClick={this.props.hideShowHandler}>{this.props.state ? 'Show Sidebar' : 'Hide Sidebar'}</button>)
+    }
+}
+
+
 class SidebarElement extends Component {
     render() {
         if (this.props.isActive) return(
@@ -9,17 +16,21 @@ class SidebarElement extends Component {
             </div>
         )
         return (
-            <div className="sidebarElement" onClick={() => window.open(`http://localhost:3000/?group_name=${this.props.name}`, '_self')}>
+            <div className="sidebarElement" onClick={() => window.open(
+                `${window.location.protocol + window.location.host}/?group_name=${this.props.name}`, '_self')}>
                 <h3>{this.props.name}</h3>
                 <p>{this.props.lastMessage}</p>
             </div>
         )
-
     }
 }
 
 
-class Sidebar extends Component {
+export class Sidebar extends Component {
+    constructor(props) {
+        super(props)
+    }
+
     render() {
         let groupsNameArray = this.props.groupsName.map((elem, i) => {
             return <SidebarElement name={elem.name} lastMessage={elem.description} key={i}
@@ -33,4 +44,4 @@ class Sidebar extends Component {
     }
 }
 
-export default Sidebar
+export default {Sidebar: Sidebar, SidebarHider: SidebarHider}

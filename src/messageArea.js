@@ -4,9 +4,18 @@ class Message extends Component {
     render() {
         if (this.props.useruid === this.props.messageuid) {
             return (
-                <div className="message messageSender">
-                    <p className='messageHeader'>{this.props.sender}</p>
-                    <p className='messageText'>{this.props.text}</p>
+                <div>
+                {
+                    this.props.hiddenSidebar ?
+                        <div className="message messageSender2">
+                            <p className='messageHeader messageHeader2'>{this.props.sender}</p>
+                            <p className='messageText'>{this.props.text}</p>
+                        </div> :
+                        <div className="message messageSender">
+                            <p className='messageHeader'>{this.props.sender}</p>
+                            <p className='messageText'>{this.props.text}</p>
+                        </div>
+                }
                 </div>
             )
         }
@@ -27,7 +36,7 @@ class Messages extends Component {
         // if (this.props.messages === null)
         let messages = this.props.messages.map((message, i) => {
             return <Message text={message.text} useruid={this.props.uid} messageuid={message.UID} time={message.time} key={i}
-            sender={message.sender} />
+            sender={message.sender} hiddenSidebar={this.props.hiddenSidebar} />
         })
 
         return(
