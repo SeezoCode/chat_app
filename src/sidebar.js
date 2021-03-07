@@ -61,4 +61,4 @@ export class Sidebar extends Component {
     }
 }
 
-export default {Sidebar: Sidebar, SidebarHider: SidebarHider}
+// export default {Sidebar: Sidebar, SidebarHider: SidebarHider}

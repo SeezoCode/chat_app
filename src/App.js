@@ -101,7 +101,6 @@ class App extends Component {
                                 id: doc.id
                             }
                         })
-                        items.reverse()
                         this.setState({
                             messages: items,
                         })
