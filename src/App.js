@@ -9,6 +9,7 @@ import SignButton from './signInButton'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/analytics'
 
 // import {useAuthState} from "react-firebase-hooks/auth";
 // import {useCollectionData} from "react-firebase-hooks/firestore";
@@ -29,16 +30,7 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth()
 const firestore = firebase.firestore()
-// const analytics = firebase.analytics();
-
-// messagesDB.add({
-//     UID: 'xxxxxxxx',
-//     group_name: 'group_one',
-//     sender: 'filip',
-//     text: 'hello world2',
-//     time: 123123123
-// })
-
+const analytics = firebase.analytics()
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -55,6 +47,7 @@ class App extends Component {
             currentGroup: this.getURL(),
             unsubscribe: null,
             formValue: '',
+            loadingToxic: false,
             UID: null,
             userName: null,
             inputValue: null,
@@ -71,6 +64,8 @@ class App extends Component {
     }
 
     componentDidMount() {
+        analytics.logEvent('componentDidMount', {name: this.getURL()});
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 this.setState({
@@ -151,23 +146,52 @@ class App extends Component {
     }
 
     onFieldSubmit = (e) => {
+        let funcInputValue = this.state.inputValue
         if (this.state.inputValue) {
             if (!this.state.signedIn) {
                 alert('User must be logged in')
                 return
             }
-            const {serverTimestamp} = firebase.firestore.FieldValue;
+            const serverTimestamp = firebase.firestore.Timestamp.now();
             this.state.messagesDB.add({
                 UID: this.state.UID,
                 group_name: this.state.currentGroup,
                 sender: this.state.userName,
                 text: this.state.inputValue,
-                time: serverTimestamp()
+                time: serverTimestamp
+            }).then((doc) => {
+                this.getToxicity(doc.id, serverTimestamp, funcInputValue)
             })
             this.handleDescription()
             this.setState({inputValue: ''})
         }
         e.preventDefault()
+    }
+
+    getToxicity (docId, time, sentence) {
+        if (!sentence[0]) return
+        this.setState({loadingToxic: true})
+        console.log(sentence)
+        // eslint-disable-next-line no-undef
+        toxicity.load(.8).then(model => {
+            model.classify([sentence]).then(predictions => {
+                let map = predictions.map(prediction => {
+                    if (prediction.results[0].match) return prediction.label;
+                    else return ''
+                }).filter(prediction => prediction)
+                map = map.join(', ')
+                console.log(map)
+                if (!map) map = 'not toxic'
+                console.log(map)
+                this.state.messagesDB.doc(docId).set({
+                    UID: this.state.UID,
+                    group_name: this.state.currentGroup,
+                    sender: `${this.state.userName}, ${map}`,
+                    text: sentence,
+                    time: time
+                }).then(() => this.setState({loadingToxic: false}))
+            });
+        });
     }
 
     handleDescription = () => {
@@ -223,7 +247,8 @@ class App extends Component {
                     </header>
                     <main className="messagesField">
                         <div className='content'>
-                            <Messages messages={this.state.messages} uid={this.state.UID} hiddenSidebar={this.state.hidden}/>
+                            <Messages messages={this.state.messages} uid={this.state.UID} hiddenSidebar={this.state.hidden}
+                                      loadingToxic={this.state.loadingToxic}/>
                         </div>
                         {/*type form*/}
                     </main>

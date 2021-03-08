@@ -11,9 +11,9 @@ class InputArea extends Component {
             <form onSubmit={this.onFieldSubmit} className="form" id='form'>
                 {!this.props.state ?
                     <input type="text" onChange={this.props.changeValue} id='inputText'
-                           placeholder='Please, type a message' /> :
+                           placeholder='Please, type a message' autoComplete='off'/> :
                     <input type="text" onChange={this.props.changeValue} id='inputText2'
-                           placeholder='Please, type a message' />
+                           placeholder='Please, type a message' autoComplete='off'/>
 
                 }
                 {/*<input type="submit" value='submit' id='inputButton' className='button hiderButton' />*/}
