@@ -55,7 +55,7 @@ export class Sidebar extends Component {
             <div className="sidebarElements">
                 <p>Latest active groups:</p>
                 {groupsNameArray}
-                <SidebarElementAddGroup lastMessage='Different group' />
+                <SidebarElementAddGroup lastMessage='Hidden groups' />
             </div>
         )
     }

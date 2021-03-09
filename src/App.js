@@ -101,7 +101,7 @@ class App extends Component {
                         })
                     });
                 unsubscribeGroups = groupsDB
-                    // .where('public', '!=', false)
+                    .where('public', '==', true)
                     // .orderBy('public')
                     .orderBy('time')
                     .limitToLast(4)
@@ -195,7 +195,11 @@ class App extends Component {
     }
 
     handleDescription = () => {
-        if (this.getURL() === undefined) return
+        let url = this.getURL()
+        let publicGroups = ['Toxic Group', 'Default Group', 'Group One', 'Group Two']
+        if (url === undefined) return
+        if (!publicGroups.includes(url)) return
+
         let currentGroupId
         for (let group of this.state.allGroupsNames) {
             if (group.name === this.state.currentGroup) {
@@ -209,6 +213,7 @@ class App extends Component {
             group_name: this.getURL(),
             description: description,
             time: firebase.firestore.FieldValue.serverTimestamp(),
+            public: true
         })
     }
 
